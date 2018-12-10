@@ -5,9 +5,11 @@
       <%= @motel.name %>
     </div>
     <span>
-      <%= @motel.avarege_point %> ✩</span>
+      <%= @motel.level %> ✩</span>
   </div>
-
+  <br>
+  <hr>
+  <hr>
   <div class="address">
     <% if user_signed_in? && (current_user.admin? || current_user.mod?) %>
       <%= link_to t("change"), edit_motel_path(@motel) %>
@@ -15,7 +17,9 @@
                   data: {confirm: t("delete_confirm")} %>
     <% end %>
   </div>
-
+  <br>
+  <hr>
+  <hr>
   <div class="address">
     <span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
     <%= @motel.address %>
@@ -25,76 +29,173 @@
     <span class="glyphicon glyphicon-phone-alt" aria-hidden="true"></span>
     <%= @motel.phone %>
   </div>
-  
+
   <div style='width: 800px;'>
     <div id="map" style='width: 800px; height: 400px;'></div>
   </div>
 
 </div>
 <div class="col-md-12">
-<% unless current_user.nil? %>
-  <% if current_user.motels.exists? @motel.id %>
-    <div class="col-md-4 btn-my-list">
-      <%= link_to t("undo_my_list"), motel_delete_my_list_path(@motel), cLass: "btn btn-primary", method: :post %>
-    </div>
-  <% else %>
-    <div class="col-md-4 btn-my-list">
-      <%= link_to t("add_my_list"), motel_add_my_list_path(@motel), cLass: "btn btn-primary", method: :post %>
-    </div>
+  <% unless current_user.nil? %>
+    <% if current_user.motels.exists? @motel.id %>
+      <div class="col-md-4 btn-my-list">
+        <%= link_to t("undo_my_list"), motel_delete_my_list_path(@motel), cLass: "btn btn-primary", method: :post %>
+      </div>
+    <% else %>
+      <div class="col-md-4 btn-my-list">
+        <%= link_to t("add_my_list"), motel_add_my_list_path(@motel), cLass: "btn btn-primary", method: :post %>
+      </div>
+    <% end %>
   <% end %>
-<% end %>
-</div>
-
-<div id="MAIN" class="delineation col1-container col-md-12" >
-  <% if @motel.hotel_rooms.count > 0 %>
-    <div class="Section__section--39L_Q col1" data-tab="TABS_OVERVIEW" id="OVERVIEW" >
-      <div class="Header__header--3OgS9 Header__divider--waZKL">ルーム</div>
-      <div style="margin-top: 10px">
-        <table style="width:100%">
-          <tr>
-            <th><h4><%= t "activerecord.attributes.room.room_type" %></h4></th>
-            <th><h4>
-              <span class="glyphicon glyphicon-bed" aria-hidden="true"></span> <%= t("activerecord.attributes.room.bed_numbers") %>
-            </h4></th>
-            <th>
-              <h4><span class="glyphicon glyphicon-user"></span> <%= t("activerecord.attributes.room.guest_no") %></h4>
-            </th>
-            <th><h4>値段</h4></th>
-          </tr>
-          <% @motel.hotel_rooms.each do |hotel_rooms| %>
-            <tr>
-              <td><%= hotel_rooms.room.room_type %></td>
-              <td><%= hotel_rooms.room.bed_numbers %></td>
-              <td><%= hotel_rooms.room.guest_no %></td>
-              <td><%= number_to_currency(hotel_rooms.price, format: "%n %u") %></td>
-            </tr>
-          <% end %>
-        </table>
+  <div class="row">
+    <div class="col-sm-3">
+      <div class="rating-block">
+        <h4>Average user rating</h4>
+        <h2 class="bold padding-bottom-7"><%= @motel.avarege_point %>
+          <small>/ 5</small>
+        </h2>
+        <button type="button" class="btn btn-warning btn-sm" aria-label="Left Align">
+          <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+        </button>
+        <% %>
+        <button type="button" class="btn btn-warning btn-sm" aria-label="Left Align">
+          <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+        </button>
+        <button type="button" class="btn btn-warning btn-sm" aria-label="Left Align">
+          <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+        </button>
+        <button type="button" class="btn btn-default btn-grey btn-sm" aria-label="Left Align">
+          <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+        </button>
+        <button type="button" class="btn btn-default btn-grey btn-sm" aria-label="Left Align">
+          <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+        </button>
       </div>
     </div>
-  <% end %>
-
-  <% if @motel.hotel_equips.count > 0 %>
-    <div class="Section__section--39L_Q col1" data-tab="TABS_OVERVIEW" id="OVERVIEW" >
-      <div class="Header__header--3OgS9 Header__divider--waZKL">アメニティ</div>
-      <div style="margin-top: 10px">
-        <table style="width:100%">
-          <tr>
-            <th><h4>
-              <span class="glyphicon glyphicon-object-align-bottom"></span> <%= t "activerecord.attributes.equipment.name" %>
-            </h4></th>
-            <th><h4>値段</h4></th>
-          </tr>
-          <% @motel.hotel_equips.each do |hotel_equips| %>
-            <tr>
-              <td><%= hotel_equips.equipment.name %></td>
-              <td><%= number_to_currency(hotel_equips.price, format: "%n %u") %></td>
-            </tr>
-          <% end %>
-        </table>
+    <div class="col-sm-3">
+      <h4>Rating breakdown</h4>
+      <div class="pull-left">
+        <div class="pull-left" style="width:35px; line-height:1;">
+          <div style="height:9px; margin:5px 0;">5 <span class="glyphicon glyphicon-star"></span></div>
+        </div>
+        <div class="pull-left" style="width:180px;">
+          <div class="progress" style="height:9px; margin:8px 0;">
+            <div class="progress-bar progress-bar-success" role="progressbar" style="width: <%= @ratecount_5 * 100 / @max_num %>%">
+              <span class="sr-only">80% Complete (danger)</span>
+            </div>
+          </div>
+        </div>
+        <div class="pull-right" style="margin-left:10px;"><%= @ratecount_5 %></div>
+      </div>
+      <div class="pull-left">
+        <div class="pull-left" style="width:35px; line-height:1;">
+          <div style="height:9px; margin:5px 0;">4 <span class="glyphicon glyphicon-star"></span></div>
+        </div>
+        <div class="pull-left" style="width:180px;">
+          <div class="progress" style="height:9px; margin:8px 0;">
+            <div class="progress-bar progress-bar-primary" role="progressbar" style="width: <%= @ratecount_4 * 100 / @max_num %>%">
+              <span class="sr-only">80% Complete (danger)</span>
+            </div>
+          </div>
+        </div>
+        <div class="pull-right" style="margin-left:10px;"><%= @ratecount_4 %></div>
+      </div>
+      <div class="pull-left">
+        <div class="pull-left" style="width:35px; line-height:1;">
+          <div style="height:9px; margin:5px 0;">3 <span class="glyphicon glyphicon-star"></span></div>
+        </div>
+        <div class="pull-left" style="width:180px;">
+          <div class="progress" style="height:9px; margin:8px 0;">
+            <div class="progress-bar progress-bar-info" role="progressbar" style="width: <%= @ratecount_3 * 100 / @max_num %>%">
+              <span class="sr-only">80% Complete (danger)</span>
+            </div>
+          </div>
+        </div>
+        <div class="pull-right" style="margin-left:10px;"><%= @ratecount_3 %></div>
+      </div>
+      <div class="pull-left">
+        <div class="pull-left" style="width:35px; line-height:1;">
+          <div style="height:9px; margin:5px 0;">2 <span class="glyphicon glyphicon-star"></span></div>
+        </div>
+        <div class="pull-left" style="width:180px;">
+          <div class="progress" style="height:9px; margin:8px 0;">
+            <div class="progress-bar progress-bar-warning" role="progressbar" style="width: <%= @ratecount_2 * 100 / @max_num %>%">
+              <span class="sr-only">80% Complete (danger)</span>
+            </div>
+          </div>
+        </div>
+        <div class="pull-right" style="margin-left:10px;"><%= @ratecount_2 %></div>
+      </div>
+      <div class="pull-left">
+        <div class="pull-left" style="width:35px; line-height:1;">
+          <div style="height:9px; margin:5px 0;">1 <span class="glyphicon glyphicon-star"></span></div>
+        </div>
+        <div class="pull-left" style="width:180px;">
+          <div class="progress" style="height:9px; margin:8px 0;">
+            <div class="progress-bar progress-bar-danger" role="progressbar" style="width: <%= @ratecount_1 * 100 / @max_num %>%">
+              <span class="sr-only">80% Complete (danger)</span>
+            </div>
+          </div>
+        </div>
+        <div class="pull-right" style="margin-left:10px;"><%= @ratecount_1 %></div>
       </div>
     </div>
-  <% end %>
+  </div>
+
+  <div id="MAIN" class="delineation">
+  </div>
+
+  <div id="MAIN" class="delineation col1-container col-md-12">
+    <% if @motel.hotel_rooms.count > 0 %>
+      <div class="Section__section--39L_Q col1" data-tab="TABS_OVERVIEW" id="OVERVIEW">
+        <div class="Header__header--3OgS9 Header__divider--waZKL">ルーム</div>
+        <div style="margin-top: 10px">
+          <table style="width:100%">
+            <tr>
+              <th><h4><%= t "activerecord.attributes.room.room_type" %></h4></th>
+              <th><h4>
+                <span class="glyphicon glyphicon-bed" aria-hidden="true"></span> <%= t("activerecord.attributes.room.bed_numbers") %>
+              </h4></th>
+              <th>
+                <h4><span class="glyphicon glyphicon-user"></span> <%= t("activerecord.attributes.room.guest_no") %>
+                </h4>
+              </th>
+              <th><h4>値段</h4></th>
+            </tr>
+            <% @motel.hotel_rooms.each do |hotel_rooms| %>
+              <tr>
+                <td><%= hotel_rooms.room.room_type %></td>
+                <td><%= hotel_rooms.room.bed_numbers %></td>
+                <td><%= hotel_rooms.room.guest_no %></td>
+                <td><%= number_to_currency(hotel_rooms.price, format: "%n %u") %></td>
+              </tr>
+            <% end %>
+          </table>
+        </div>
+      </div>
+    <% end %>
+
+    <% if @motel.hotel_equips.count > 0 %>
+      <div class="Section__section--39L_Q col1" data-tab="TABS_OVERVIEW" id="OVERVIEW">
+        <div class="Header__header--3OgS9 Header__divider--waZKL">アメニティ</div>
+        <div style="margin-top: 10px">
+          <table style="width:100%">
+            <tr>
+              <th><h4>
+                <span class="glyphicon glyphicon-object-align-bottom"></span> <%= t "activerecord.attributes.equipment.name" %>
+              </h4></th>
+              <th><h4>値段</h4></th>
+            </tr>
+            <% @motel.hotel_equips.each do |hotel_equips| %>
+              <tr>
+                <td><%= hotel_equips.equipment.name %></td>
+                <td><%= number_to_currency(hotel_equips.price, format: "%n %u") %></td>
+              </tr>
+            <% end %>
+          </table>
+        </div>
+      </div>
+    <% end %>
   </div>
   <div class="Section__section--39L_Q" data-tab="TABS_OVERVIEW" id="OVERVIEW" style="clear:both;">
     <div class="Header__header--3OgS9 Header__divider--waZKL">概要</div>
@@ -130,7 +231,7 @@
           </div>
           <div class="col-md-1 col-md-offset-1">
             <%= select_tag "sort_order", options_for_select(["昇順", "降順"]) %>
-            <%= hidden_field_tag "hotel_id", @motel.id %>
+            <%= hidden_field_tag "id", @motel.id %>
           </div>
           <div style="margin-top: 10px; border: 0">
             <%= button_tag "フィルター", class: "btn btn-success" %>
@@ -142,7 +243,9 @@
         <div class="col-md-12 list-key">
           <h4>レビューハイライト:</h4>
           <ul>
-            <% @top_keywords.each do |key, value| %>
+            <% top_keywords = @ke.extract_keyphrase(@reviews_text.join("")) %>
+            <% top_keywords = Hash[top_keywords.sort_by {|k, v| -v}[0..20]] %>
+            <% top_keywords.each do |key, value| %>
               <li><a href="#"><%= key %></a></li>
             <% end %>
           </ul>
@@ -150,13 +253,13 @@
         　
       </div>
     </div>
-    <div style="margin-top: 100px;" class="review_search_content">
+    <div style="margin-top: 100px;" class="review_search_content" id="reviews">
       <%= render partial: "motels/review", collection: @reviews.order_after_like %>
     </div>
   </div>
   <div id="paginator1">
     <%= paginate @reviews, remote: true %>
-</div>
+  </div>
 </div>
 
 <script type="text/javascript">

@@ -1,6 +1,7 @@
 class MotelsController < ApplicationController
   load_and_authorize_resource
   before_action :find_motel, only: [:show, :edit, :update, :destroy]
+
   def index
     if params[:search]
       @motels = Motel.order_level.search(params[:search]).page(params[:page])
@@ -31,18 +32,28 @@ class MotelsController < ApplicationController
       marker.infowindow motel.name
     end
 
-    ke = KeyphraseExtraction.new()
+    @ke = KeyphraseExtraction.new()
     # all_reviews = @motel.reviews
     reviews_text = []
     #all_reviews.each do |t|
     #  reviews_text.push(t.content)
     #end
     @reviews = @motel.reviews.page(params[:page])
-                    .per 15
-    reviews_text = @motel.reviews.pluck(:content)
-    rv_keywords = ke.extract_keyphrase(reviews_text.join(""))
-    @top_keywords = Hash[rv_keywords.sort_by { |k,v| -v }[0..20]]
-
+                   .per 15
+    @reviews_text = @motel.reviews.pluck(:content)
+    review_rating = @motel.reviews.pluck(:rate)
+    # rv_keywords = ke.extract_keyphrase(reviews_text.join(""))
+    # @top_keywords = Hash[rv_keywords.sort_by { |k,v| -v }[0..20]]
+    @ratecount_5 = review_rating.count {|x| x == 5}
+    @ratecount_4 = review_rating.count {|x| x == 4}
+    @ratecount_3 = review_rating.count {|x| x == 3}
+    @ratecount_2 = review_rating.count {|x| x == 2}
+    @ratecount_1 = review_rating.count {|x| x == 1}
+    @max_num = [@ratecount_5, @ratecount_4, @ratecount_3, @ratecount_2, @ratecount_1].max
+    respond_to do |format|
+      format.html
+      format.js
+    end
   end
 
   def edit
@@ -84,12 +95,13 @@ class MotelsController < ApplicationController
 
   def add_my_list
     @motel = Motel.find_by id: params[:motel_id]
-    UserHotel.create user_id: current_user.id , motel_id: @motel.id
+    UserHotel.create user_id: current_user.id, motel_id: @motel.id
     redirect_to motel_path(@motel)
   end
+
   def delete_my_list
     @motel = Motel.find_by id: params[:motel_id]
-    UserHotel.where( user_id: current_user.id , motel_id: @motel.id).delete_all
+    UserHotel.where(user_id: current_user.id, motel_id: @motel.id).delete_all
     redirect_to motel_path(@motel)
   end
 

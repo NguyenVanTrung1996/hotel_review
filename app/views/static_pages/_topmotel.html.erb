@@ -1,88 +1,91 @@
-<h4> トップのレビュー</h4>
-<p class="zone-p"><span class="glyphicon glyphicon-hand-right"></span> 
-    <%= link_to "ハノイ市", zone_top_motel_path(:param => "ハノイ") %>
+<h4> トップホテル</h4>
+<p class="zone-p"><span class="glyphicon glyphicon-hand-right"></span>
+  <%= link_to "ハノイ", zone_top_motel_path(:param => "ハノイ") %>
 </p>
-<% Motel.joins(:reviews).where("zone LIKE ?","ハノイ").group("motels.id").order("AVG(reviews.rate) DESC").limit(5).each do |p| %>
-    <div style ="clear:both;">
-    <%= link_to motel_path(p) do  %>
-        <div class="zone-left" >
+<% Motel.joins(:reviews).where("zone LIKE ?", "ハノイ").group("motels.id").order("AVG(reviews.rate) DESC").limit(5).each do |p| %>
+  <div style="clear:both;">
+    <%= link_to motel_path(p) do %>
+      <div class="zone-left">
         <% if p.images? %>
-            <%= image_tag p.images[0].url %>
+          <%= image_tag p.images[0].url %>
         <% else %>
-            <%= image_tag "default-hotel" %>
+          <%= image_tag "default-hotel" %>
         <% end %>
-        </div>
-        <div class="zone-right" >
+      </div>
+      <div class="zone-right">
         <%= p.name %></br>
-        <% p.star.to_i.times do  %>
-        <span class="glyphicon glyphicon-star "></span>
+        <% p.star.to_i.times do %>
+          <span class="glyphicon glyphicon-star "></span>
         <% end %>
-        <% p.blank_stars.to_i.times do  %>
-        <span class="glyphicon glyphicon-star-empty "></span>
-        <% end %></br>
-        </div>
+        <% p.blank_stars.to_i.times do %>
+          <span class="glyphicon glyphicon-star-empty "></span>
+        <% end %>
+        </br>
+      </div>
     <% end %>
-    </div>
+  </div>
 <% end %>
-<% if Motel.joins(:reviews).where("zone LIKE ?","ハノイ").blank? %>
-        <p>レビューしたホテルが無い</p>
+<% if Motel.joins(:reviews).where("zone LIKE ?", "ハノイ").blank? %>
+  <p>レビューしたホテルが無い</p>
 <% end %>
 
 <p class="zone-p"><span class="glyphicon glyphicon-hand-right"></span>
-    <%= link_to "ホーチミン市", zone_top_motel_path(:param => "ホーチミン") %>
+  <%= link_to "ホーチミン", zone_top_motel_path(:param => "ホーチミン") %>
 </p>
-<% Motel.joins(:reviews).where("zone LIKE ?","ホーチミン").group("motels.id").order("AVG(reviews.rate) DESC").limit(5).each do |p| %>
-    <div style ="clear:both;">
-    <%= link_to motel_path(p) do  %>
-        <div class="zone-left" >
+<% Motel.joins(:reviews).where("zone LIKE ?", "ホーチミン").group("motels.id").order("AVG(reviews.rate) DESC").limit(5).each do |p| %>
+  <div style="clear:both;">
+    <%= link_to motel_path(p) do %>
+      <div class="zone-left">
         <% if p.images? %>
-            <%= image_tag p.images[0].url %>
+          <%= image_tag p.images[0].url %>
         <% else %>
-            <%= image_tag "default-hotel" %>
+          <%= image_tag "default-hotel" %>
         <% end %>
-        </div>
-        <div class="zone-right" >
+      </div>
+      <div class="zone-right">
         <%= p.name %></br>
-        <% p.star.to_i.times do  %>
-        <span class="glyphicon glyphicon-star "></span>
+        <% p.star.to_i.times do %>
+          <span class="glyphicon glyphicon-star "></span>
         <% end %>
-        <% p.blank_stars.to_i.times do  %>
-        <span class="glyphicon glyphicon-star-empty "></span>
-        <% end %></br>
-        </div>
+        <% p.blank_stars.to_i.times do %>
+          <span class="glyphicon glyphicon-star-empty "></span>
+        <% end %>
+        </br>
+      </div>
     <% end %>
-    </div>
+  </div>
 <% end %>
-<% if Motel.joins(:reviews).where("zone LIKE ?","ホーチミン").blank? %>
-    <p style="color: red;">レビューしたホテルが無い</p>
+<% if Motel.joins(:reviews).where("zone LIKE ?", "ホーチミン").blank? %>
+  <p style="color: red;">レビューしたホテルが無い</p>
 <% end %>
 
 
 <p class="zone-p"><span class="glyphicon glyphicon-hand-right"></span>
-    <%= link_to "ダナン市 ", zone_top_motel_path(:param => "ダナン") %>
+  <%= link_to "ダナン", zone_top_motel_path(:param => "ダナン") %>
 </p>
-<% Motel.joins(:reviews).where("zone LIKE ?","ダナン").group("motels.id").order("AVG(reviews.rate) DESC").limit(5).each do |p| %>
-    <div style ="clear:both;">
-    <%= link_to motel_path(p) do  %>
-        <div class="zone-left" >
+<% Motel.joins(:reviews).where("zone LIKE ?", "ダナン").group("motels.id").order("AVG(reviews.rate) DESC").limit(5).each do |p| %>
+  <div style="clear:both;">
+    <%= link_to motel_path(p) do %>
+      <div class="zone-left">
         <% if p.images? %>
-            <%= image_tag p.images[0].url %>
+          <%= image_tag p.images[0].url %>
         <% else %>
-            <%= image_tag "default-hotel" %>
+          <%= image_tag "default-hotel" %>
         <% end %>
-        </div>
-        <div class="zone-right" >
+      </div>
+      <div class="zone-right">
         <%= p.name %></br>
-        <% p.star.to_i.times do  %>
-        <span class="glyphicon glyphicon-star "></span>
+        <% p.star.to_i.times do %>
+          <span class="glyphicon glyphicon-star "></span>
         <% end %>
-        <% p.blank_stars.to_i.times do  %>
-        <span class="glyphicon glyphicon-star-empty "></span>
-        <% end %></br>
-        </div>
+        <% p.blank_stars.to_i.times do %>
+          <span class="glyphicon glyphicon-star-empty "></span>
+        <% end %>
+        </br>
+      </div>
     <% end %>
-    </div>
+  </div>
 <% end %>
-<% if Motel.joins(:reviews).where("zone LIKE ?","ダナン").blank? %>
-        <p style="color: red;">レビューしたホテルが無い</p>
+<% if Motel.joins(:reviews).where("zone LIKE ?", "ダナン").blank? %>
+  <p style="color: red;">レビューしたホテルが無い</p>
 <% end %>
